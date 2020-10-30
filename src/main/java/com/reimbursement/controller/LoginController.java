@@ -47,8 +47,8 @@ public class LoginController {
 		String[] bodySeparated = reqBody.split("&");		
 		
 		
-		String username = bodySeparated[0].substring(9).strip();
-		String password = bodySeparated[1].substring(5).strip();
+		String username = bodySeparated[0].substring(9).trim();
+		String password = bodySeparated[1].substring(5).trim();
 		
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
