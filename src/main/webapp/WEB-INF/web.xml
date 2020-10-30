@@ -4,10 +4,6 @@
     <welcome-file-list>
         <welcome-file>/index.html</welcome-file>
             </welcome-file-list>
-    <context-param>
-        <param-name>application</param-name>
-  	    <param-value>Reimbursment</param-value>
-    </context-param>
     <servlet>
         <servlet-name>views</servlet-name>
   	    <servlet-class>com.reimbursement.servlet.ViewServlet</servlet-class>
