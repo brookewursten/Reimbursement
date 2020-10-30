@@ -10,8 +10,17 @@ import java.util.ArrayList;
 import com.reimbursement.config.EnvironmentConnectionUtil;
 
 public class UserDao implements DaoContract<User, Integer> {
-	EnvironmentConnectionUtil ecu;
+
+	public static EnvironmentConnectionUtil ecu;
 	
+	public UserDao(EnvironmentConnectionUtil ecu) {
+		super();
+		UserDao.ecu = ecu;
+	}
+
+	public UserDao() {
+		this(EnvironmentConnectionUtil.getInstance());
+	}
 
 	
 	
@@ -23,7 +32,7 @@ public class UserDao implements DaoContract<User, Integer> {
 		ArrayList<User> userList = new ArrayList<User>();
 		User user = new User(0,"","","","","",User.role.EMPLOYEE);
 
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ResultSet rs = ps.executeQuery();
@@ -60,7 +69,7 @@ public class UserDao implements DaoContract<User, Integer> {
 	@Override
 	public void update(User user) {
 		String sql = "update users set username=?, password = ?,first_name= ?,last_name = ? email=?, user_role=? where user_id=?"; 
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ps.setInt(7, user.getId());
@@ -94,7 +103,7 @@ public class UserDao implements DaoContract<User, Integer> {
 	@Override
 	public void create(User user) {
 		String sql = "insert into users(username,password,first_name,last_name,email,user_role) values (?,?,?,?,?,?)"; // this will sanitize the input
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql)) {
 		
 		ps.setString(1,user.getUsername());
@@ -125,7 +134,7 @@ public class UserDao implements DaoContract<User, Integer> {
 	@Override
 	public void delete(Integer id) {
 		String sql = "delete from users where user_id=?"; // this will sanitize the input
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1,id);
 			ps.execute();
@@ -139,7 +148,7 @@ public class UserDao implements DaoContract<User, Integer> {
 		String sql = "select * from users where user_id = ?";
 		User user = new User(0,"","","","","",User.role.EMPLOYEE);
 
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 			
 			ps.setInt(1, i);
@@ -174,7 +183,7 @@ public class UserDao implements DaoContract<User, Integer> {
 		String sql = "select * from users where username = ?";
 		User user = new User(0,"","","","","",User.role.EMPLOYEE);
 
-		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+		try (Connection conn = ecu.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 			
 			ps.setString(1, username);
