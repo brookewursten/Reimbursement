@@ -4,6 +4,16 @@ import java.time.LocalDateTime;
 
 public final class Reimbursement {
 	public static enum status {PENDING, ACCEPTED, REJECTED};
+	public static enum type {GAS("gas mileage"),TRAVEL("travel and lodging"),FOOD("meals and entertainment"),TOOLS("tools and supplies"),TRAINING("training and licensing"),MISC("miscellaneous");
+		private String typeName;
+		type(String t) {
+			this.typeName = t;
+		}
+		public String getTypeName() {
+			return typeName;
+		}
+	
+	};
 	private int id;
 	private float amount;
 	private LocalDateTime submitted;
@@ -13,30 +23,28 @@ public final class Reimbursement {
 	private int author;
 	private int resolver;
 	private status reimbursementStatus;
-	private String type;
+	private type reimType;
 	
 	
 	public Reimbursement() {
 		super();
 	}
 	
-	public Reimbursement(int id, float amount, LocalDateTime submitted, String description, byte[] receipt, int author,
-			status reimbursementStatus, String type) {
+	public Reimbursement(float amount, String description, byte[] receipt, int author,
+			status reimbursementStatus, type rType) {
 		super();
-		this.id = id;
 		this.amount = amount;
-		this.submitted = submitted;
 		this.description = description;
 		this.setReceipt(receipt);
 		this.author = author;
 		this.reimbursementStatus = reimbursementStatus;
-		this.type = type;
+		this.reimType = rType;
 	}
 
 
 
 	public Reimbursement(int id, float amount, LocalDateTime submitted, LocalDateTime resolved, String description, byte[] receipt,
-			int author, int resolver, status reimbursementStatus, String type) {
+			int author, int resolver, status reimbursementStatus, type rtype) {
 		super();
 		this.id = id;
 		this.amount = amount;
@@ -47,7 +55,7 @@ public final class Reimbursement {
 		this.author = author;
 		this.resolver = resolver;
 		this.reimbursementStatus = reimbursementStatus;
-		this.type = type;
+		this.reimType = rtype;
 	}
 
 
@@ -148,15 +156,6 @@ public final class Reimbursement {
 
 
 
-	public String getType() {
-		return type;
-	}
-
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public byte[] getReceipt() {
 		return receipt;
@@ -164,6 +163,14 @@ public final class Reimbursement {
 
 	public void setReceipt(byte[] receipt) {
 		this.receipt = receipt;
+	}
+
+	public type getReimType() {
+		return reimType;
+	}
+
+	public void setReimType(type reimType) {
+		this.reimType = reimType;
 	}
 
 }

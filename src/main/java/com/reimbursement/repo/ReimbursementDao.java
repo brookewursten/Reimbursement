@@ -1,6 +1,10 @@
+
 package com.reimbursement.repo;
 
 import com.reimbursement.model.Reimbursement;
+import com.reimbursement.model.Reimbursement.status;
+import com.reimbursement.model.Reimbursement.type;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,41 +12,65 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.reimbursement.config.EnvironmentConnectionUtil;
 
 public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 	
 	@Override
-	public List<Reimbursement> findAll() {
+	public ArrayList<Reimbursement> findAll() {
 		String sql = "select * from reimbursements";
-		List<Reimbursement> rList = new ArrayList<Reimbursement>();
+		ArrayList<Reimbursement> rList = new ArrayList<Reimbursement>();
 		Reimbursement reim = new Reimbursement();
 
 		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ResultSet rs = ps.executeQuery();
+			
+			status rStatus;
+			type rType;
 
-
+			//set status
 			while (rs.next()) {
-				switch(rs.getInt(7)) {
+				switch(rs.getInt(9)) {
 				case 1:
-					reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.PENDING,rs.getString(9));
-					rList.add(reim);
+					rStatus = status.PENDING;
 					break;
 				case 2:
-					reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.ACCEPTED,rs.getString(9));
-					rList.add(reim);	
+					rStatus = status.ACCEPTED;
 					break;
 				case 3:
-					reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.REJECTED,rs.getString(9));
-					rList.add(reim);
+					rStatus = status.REJECTED;
 					break;
 				default:
 					throw new SQLException();
 				}
+				//set type
+				switch(rs.getInt(10)) {
+				case 1:
+					rType = type.GAS;
+					break;
+				case 2:
+					rType = type.TRAVEL;
+					break;
+				case 3:
+					rType = type.FOOD;
+					break;
+				case 4:
+					rType = type.TOOLS;
+					break;
+				case 5:
+					rType = type.TRAINING;
+					break;
+				case 6:
+					rType = type.MISC;
+					break;
+				default:
+					throw new SQLException();					
+				}
+				
+				reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),rStatus,rType);
+				rList.add(reim);
 
 			}
 
@@ -81,7 +109,34 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 				ps.setInt(6, 3);
 				break;	
 			}
-			ps.setString(7, reim.getType());
+			
+			//set type
+			int typeId;
+			switch(reim.getReimType()) {
+			case FOOD:
+				typeId = 3;
+				break;
+			case GAS:
+				typeId = 1;
+				break;
+			case MISC:
+				typeId = 6;
+				break;
+			case TOOLS:
+				typeId = 4;
+				break;
+			case TRAINING:
+				typeId = 5;
+				break;
+			case TRAVEL:
+				typeId = 2;
+				break;
+			default:
+				throw new SQLException();
+			
+			}
+			
+			ps.setInt(7, typeId);
 
 
 			ps.execute();
@@ -94,7 +149,7 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 
 	@Override
 	public void create(Reimbursement reim) {
-		String sql = "insert into users(amount,submitted,description,receipt,author,reim_status,reim_type) values (?,?,?,?,?,?,?)";
+		String sql = "insert into reimbursements(amount,submitted,description,receipt,author,reim_status,reim_type) values (?,?,?,?,?,?,?)";
 		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql)) {
 		
@@ -105,7 +160,35 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 		ps.setBytes(4,reim.getReceipt());
 		ps.setInt(5,reim.getAuthorID());
 		ps.setInt(6, 1);
-		ps.setString(7, reim.getType());
+		
+		int typeId;
+		switch(reim.getReimType()){
+		case FOOD:
+			typeId = 3;
+			break;
+		case GAS:
+			typeId = 1;
+			break;
+		case MISC:
+			typeId = 6;
+			break;
+		case TOOLS:
+			typeId = 4;
+			break;
+		case TRAINING:
+			typeId = 5;
+			break;
+		case TRAVEL:
+			typeId = 2;
+			break;
+		default:
+			throw new SQLException();
+		}
+		
+		
+		
+		
+		ps.setInt(7, typeId);
 		
 		ps.execute();
 		} catch (SQLException e) {
@@ -137,19 +220,47 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 			
 			ResultSet rs = ps.executeQuery();
 			
-			switch(rs.getInt(7)) {
+			status rStatus;
+			type rType;
+			
+			switch(rs.getInt(9)) {
 			case 1:
-				reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.PENDING,rs.getString(9));
+				rStatus = status.PENDING;
 				break;
 			case 2:
-				reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.ACCEPTED,rs.getString(9));
+				rStatus = status.ACCEPTED;
 				break;
 			case 3:
-				reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),Reimbursement.status.REJECTED,rs.getString(9));
+				rStatus = status.REJECTED;
 				break;
 			default:
 				throw new SQLException();
 			}
+			//set type
+			switch(rs.getInt(10)) {
+			case 1:
+				rType = type.GAS;
+				break;
+			case 2:
+				rType = type.TRAVEL;
+				break;
+			case 3:
+				rType = type.FOOD;
+				break;
+			case 4:
+				rType = type.TOOLS;
+				break;
+			case 5:
+				rType = type.TRAINING;
+				break;
+			case 6:
+				rType = type.MISC;
+				break;
+			default:
+				throw new SQLException();					
+			}
+			
+			reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),rStatus,rType);
 			
 			rs.close();
 
@@ -159,6 +270,77 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 		}
 		return reim;
 
+	}
+	
+	
+	public ArrayList<Reimbursement> findAllByUserId(int id){
+
+		String sql = "select * from reimbursements where author = ?";
+		ArrayList<Reimbursement> rList = new ArrayList<Reimbursement>();
+		Reimbursement reim = new Reimbursement();
+
+		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+			
+			status rStatus;
+			type rType;
+
+			//set status
+			while (rs.next()) {
+				switch(rs.getInt(9)) {
+				case 1:
+					rStatus = status.PENDING;
+					break;
+				case 2:
+					rStatus = status.ACCEPTED;
+					break;
+				case 3:
+					rStatus = status.REJECTED;
+					break;
+				default:
+					throw new SQLException();
+				}
+				//set type
+				switch(rs.getInt(10)) {
+				case 1:
+					rType = type.GAS;
+					break;
+				case 2:
+					rType = type.TRAVEL;
+					break;
+				case 3:
+					rType = type.FOOD;
+					break;
+				case 4:
+					rType = type.TOOLS;
+					break;
+				case 5:
+					rType = type.TRAINING;
+					break;
+				case 6:
+					rType = type.MISC;
+					break;
+				default:
+					throw new SQLException();					
+				}
+				
+				reim = new Reimbursement(rs.getInt(1),rs.getFloat(2),rs.getTimestamp(3).toLocalDateTime(),rs.getTimestamp(4).toLocalDateTime(),rs.getString(5),rs.getBytes(6),rs.getInt(7),rs.getInt(8),rStatus,rType);
+				rList.add(reim);
+
+			}
+
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rList;
+
+	
+		
 	}
 
 	

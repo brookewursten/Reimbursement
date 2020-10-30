@@ -7,16 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.reimbursement.config.EnvironmentConnectionUtil;
 
 public class UserDao implements DaoContract<User, Integer> {
 
 	@Override
-	public List<User> findAll() {
+	public ArrayList<User> findAll() {
 		String sql = "select * from users";
-		List<User> userList = new ArrayList<User>();
+		ArrayList<User> userList = new ArrayList<User>();
 		User user = new User(0,"","","","","",User.role.EMPLOYEE);
 
 		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
@@ -89,26 +87,25 @@ public class UserDao implements DaoContract<User, Integer> {
 
 	@Override
 	public void create(User user) {
-		String sql = "insert into users values (?,?,?,?,?,?,?)"; // this will sanitize the input
+		String sql = "insert into users(username,password,first_name,last_name,email,user_role) values (?,?,?,?,?,?)"; // this will sanitize the input
 		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql)) {
 		
-		ps.setInt(1, user.getId());
-		ps.setString(2,user.getUsername());
-		ps.setString(3,user.getPassword());
-		ps.setString(4,user.getFirstName());
-		ps.setString(5,user.getLastName());
-		ps.setString(6,user.getEmail());
+		ps.setString(1,user.getUsername());
+		ps.setString(2,user.getPassword());
+		ps.setString(3,user.getFirstName());
+		ps.setString(4,user.getLastName());
+		ps.setString(5,user.getEmail());
 		
 		switch(user.getRole()) {
 		case ADMIN:
-			ps.setInt(7, 1);
+			ps.setInt(6, 1);
 			break;
 		case MANAGER:
-			ps.setInt(7, 2);
+			ps.setInt(6, 2);
 			break;
 		case EMPLOYEE:
-			ps.setInt(7, 3);
+			ps.setInt(6, 3);
 			break;	
 		}
 		
@@ -165,5 +162,43 @@ public class UserDao implements DaoContract<User, Integer> {
 		}
 		return user;
 
+	}
+	
+	public User findByUsername(String username) {
+		String sql = "select * from users where username = ?";
+		User user = new User(0,"","","","","",User.role.EMPLOYEE);
+
+		try (Connection conn = EnvironmentConnectionUtil.getInstance().getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			switch(rs.getInt(7)) {
+			case 1:
+				user = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),User.role.ADMIN);
+				break;
+			case 2:
+				user = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),User.role.MANAGER);
+				break;
+			case 3:
+				user = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),User.role.EMPLOYEE);
+				break;
+			default:
+				throw new SQLException();
+			}
+			
+			rs.close();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+
 	}		
+	
+	
+	
 }

@@ -1,6 +1,6 @@
 package com.reimbursement.repo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface DaoContract<T,I> {
 
@@ -15,7 +15,7 @@ public interface DaoContract<T,I> {
 	 *This will create a contract for all dao classes to follow.
 	 */             
 	 //@return A list of all instances in the db
-	List<T> findAll();
+	ArrayList<T> findAll();
 
 	/**
 	 * 
