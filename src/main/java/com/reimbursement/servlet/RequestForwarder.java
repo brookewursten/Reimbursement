@@ -15,6 +15,7 @@ public class RequestForwarder extends HttpServlet {
 	public String routes(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		
+		System.out.println(req.getRequestURI());
 		switch (req.getRequestURI()){
 		case "/login.page":
 			return new LoginController().login(req,session);
