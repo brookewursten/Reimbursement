@@ -46,7 +46,7 @@ public class LoginController {
 		if(encoder.matches(password,u.getPassword())) {
 			session.setAttribute("userId", u.getId());
 			session.setAttribute("userRole", u.getRole().toString());
-			return "login.page";
+			return "reimburse.html";
 		}else {
 			return "index.html";
 		}
