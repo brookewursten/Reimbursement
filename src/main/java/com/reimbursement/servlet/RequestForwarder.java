@@ -16,7 +16,7 @@ public class RequestForwarder extends HttpServlet {
 		HttpSession session = req.getSession();
 		
 		switch (req.getRequestURI()){
-		case "login.page":
+		case "/login.page":
 			return new LoginController().login(req,session);
 		default: 
 			return "./index.html";
