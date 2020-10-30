@@ -183,12 +183,7 @@ public class UserDao implements DaoContract<User, Integer> {
 		String sql = "select * from users where username = ?";
 		User user = new User(0,"","","","","",User.role.EMPLOYEE);
 		
-		try {
-			Class.forName("org.postgresql.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	
 		try (Connection conn = ecu.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 			
