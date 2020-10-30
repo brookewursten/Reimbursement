@@ -223,6 +223,7 @@ public class ReimbursementDao implements DaoContract<Reimbursement,Integer>{
 			status rStatus;
 			type rType;
 			
+			rs.next();
 			switch(rs.getInt(9)) {
 			case 1:
 				rStatus = status.PENDING;

@@ -180,7 +180,7 @@ public class UserDao implements DaoContract<User, Integer> {
 			ps.setString(1, username);
 			
 			ResultSet rs = ps.executeQuery();
-			
+			rs.next();
 			switch(rs.getInt(7)) {
 			case 1:
 				user = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),User.role.ADMIN);
