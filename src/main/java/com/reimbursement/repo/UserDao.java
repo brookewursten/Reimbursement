@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import com.reimbursement.config.EnvironmentConnectionUtil;
 
 public class UserDao implements DaoContract<User, Integer> {
+	EnvironmentConnectionUtil ecu;
+	
+
+	
+	
+	
 
 	@Override
 	public ArrayList<User> findAll() {

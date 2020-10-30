@@ -1,6 +1,12 @@
 package com.reimbursement.controller;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -31,18 +37,30 @@ public class LoginController {
 
 
 	public String login(HttpServletRequest req,HttpSession session) {
-		String username = req.getAttribute("username").toString();
-		String password = req.getAttribute("password").toString();
+		String reqBody = "";
+		try {
+		BufferedReader reader = req.getReader();
+		reqBody = reader.readLine();
+		}catch(IOException e){
+			System.out.println("sorry");
+		}
+		String[] bodySeparated = reqBody.split("&");		
+		
+		
+		String username = bodySeparated[0].substring(9).strip();
+		String password = bodySeparated[1].substring(5).strip();
+		
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-		User u;
+		User u = new User();
 		
 		try{
 			u = ss.getUser(username);
 		}catch(Exception e) {
 			return "index.html";
 		}
+		System.out.println(encoder.matches(password,u.getPassword()));
 		if(encoder.matches(password,u.getPassword())) {
 			session.setAttribute("userId", u.getId());
 			session.setAttribute("userRole", u.getRole().toString());

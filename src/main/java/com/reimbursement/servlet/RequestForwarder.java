@@ -15,8 +15,8 @@ public class RequestForwarder extends HttpServlet {
 	public String routes(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		
-		System.out.println(req.getRequestURI());
-		switch (req.getRequestURI()){
+		String uri = req.getRequestURI().substring(29);
+		switch (uri){
 		case "/login.page":
 			return new LoginController().login(req,session);
 		default: 
@@ -25,17 +25,18 @@ public class RequestForwarder extends HttpServlet {
 	}
 	
 	public void data(HttpServletRequest req, HttpServletResponse res,HttpSession ses) throws IOException {
-		switch(req.getRequestURI()) {
-		case "/Reimbursment/all.json":
+		String uri = req.getRequestURI().substring(29);
+		switch(uri) {
+		case "/all.json":
 			new ManagerController().sendReimbursements(res);
 			break;
-		case "Reimbursement/mine.json":
+		case "/mine.json":
 			new EmployeeController().sendReimbursements(res,ses);
 			break;
-		case "/Reimbursement/manager.json":
+		case "/manager.json":
 			new ManagerController().acceptOrReject(req, res,ses);
 			break;
-		case "/Reimbursement/employee.json":
+		case "/employee.json":
 			new EmployeeController().newReimbursement(req,res,ses);
 		
 				
