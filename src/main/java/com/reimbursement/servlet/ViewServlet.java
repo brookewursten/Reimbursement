@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "views", urlPatterns = { "*.page" })
 public class ViewServlet extends HttpServlet {
 
 	@Override
