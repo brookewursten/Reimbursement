@@ -18,7 +18,7 @@
     </servlet>
     <servlet-mapping>
   	    <servlet-name>views</servlet-name>
-  	    <url-pattern>*.page</url-pattern>
+  	    <url-pattern>/login.page</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
   	    <servlet-name>data</servlet-name>
