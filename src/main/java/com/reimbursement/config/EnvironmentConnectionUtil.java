@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 
 public class EnvironmentConnectionUtil {
-//	private String url = System.getenv("url");
-//	private String username = System.getenv("username");
-//	private String password = System.getenv("password");
+	private String url = System.getenv("url");
+	private String username = System.getenv("username");
+	private String password = System.getenv("password");
 
 	private static EnvironmentConnectionUtil instance;
 
@@ -20,6 +20,6 @@ public class EnvironmentConnectionUtil {
 	}
 
 	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection("jdbc:postgresql://training-db1.cwxetsceaaf2.us-east-2.rds.amazonaws.com:5432/postgres?currentSchema=reimbursement", "bwursten", "tameno314");
+		return DriverManager.getConnection(url, username, password);
 	}
 }
