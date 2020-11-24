@@ -18,7 +18,7 @@ The employee reimbursement system is a full-stack java application designed to m
     As a manager, approve or reject reimbursements
     Password hashing using Bcrypt
 
-To-do list:
+**To-do list:**
 
     Improve styling on the reimbursements page
     Implement way to create new users from client side
