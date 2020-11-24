@@ -1,8 +1,8 @@
-**Vandelay Industries Reimbursement System**
+# Vandelay Industries Reimbursement System
 
 The employee reimbursement system is a full-stack java application designed to manage reimbursements for a fictional company called Vandelay Industries.
 
-**Technologies Used**
+## Technologies Used
 
     Java 8
     Javascript - ES6
@@ -11,19 +11,19 @@ The employee reimbursement system is a full-stack java application designed to m
     JUnit- version 4.12
     Spring Security - version 5.4.1
 
-**Features**
+## Features
 
     Login as employee or finance manager
     As an employee, request reimbursement for business expenses
     As a manager, approve or reject reimbursements
     Password hashing using Bcrypt
 
-**To-do list:**
+### To-do list:
 
     Improve styling on the reimbursements page
     Implement way to create new users from client side
 
-**Getting Started**
+## Getting Started
 
     git clone https://github.com/brookewursten/Reimbursement.git
 
@@ -34,7 +34,7 @@ The employee reimbursement system is a full-stack java application designed to m
 You should see the login page:
 ![login page](https://raw.githubusercontent.com/brookewursten/Reimbursement/master/VandelayReimbursement.png?raw=true)
 
-**Usage**
+## Usage
 
     After installation, you must set up a Postgresql database and add its url and credentials to the 
     environment variables to be used by EnvironmentConnectionUtil.java. You should manually populate 
