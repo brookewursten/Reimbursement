@@ -34,8 +34,6 @@ To-do list:
 
 Getting Started
 
-(include git clone command) (include all environment setup steps)
-
     git clone https://github.com/brookewursten/Reimbursement.git
 
     mvn clean package
@@ -47,4 +45,6 @@ Getting Started
 
 Usage
 
-    After installation, you must set up a Postgresql database and add its url and credentials to the environment variables to be used by EnvironmentConnectionUtil.java. You should populate the database with any employees or admins you want to use.
+    After installation, you must set up a Postgresql database and add its url and credentials to the 
+    environment variables to be used by EnvironmentConnectionUtil.java. You should manually populate 
+    the database with any employees and admins you want to use.
