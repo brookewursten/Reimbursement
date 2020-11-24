@@ -1,4 +1,4 @@
-    #Vandelay Industries Reimbursement System
+#Vandelay Industries Reimbursement System
 
 The employee reimbursement system is a full-stack java application designed to manage reimbursements for a fictional company called Vandelay Industries.
 
