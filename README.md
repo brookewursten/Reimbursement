@@ -40,8 +40,8 @@ Getting Started
     
     Deploy the war to tomcat and visit localhost:{tomcat port}/Reimbursement
     
-    You should see the login page:
-    ![login page](https://raw.githubusercontent.com/brookewursten/Reimbursement/master/VandelayReimbursement.png?raw=true)
+You should see the login page:
+![login page](https://raw.githubusercontent.com/brookewursten/Reimbursement/master/VandelayReimbursement.png?raw=true)
 
 Usage
 
