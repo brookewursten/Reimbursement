@@ -1,12 +1,5 @@
-# Reimbursement
-The employee reimbursement system is a full-stack java application designed to manage reimbursements for a fictional company called Vandelay Industries. 
+#Vandelay Industries Reimbursement System
 
-The repo layer was created using the DAO design pattern and JDBC. The controller and servlet layers use an MVC design pattern and the HttpServlet Class. The
-front end is all html,css and javascript.
-
-To launch, the project must be built with maven and the war deployed to a tomcat server.
-
-Vandelay Industries Reimbursement System
 The employee reimbursement system is a full-stack java application designed to manage reimbursements for a fictional company called Vandelay Industries.
 
 Technologies Used
@@ -19,8 +12,6 @@ Technologies Used
     Spring Security - version 5.4.1
 
 Features
-
-List of features ready and TODOs for future development
 
     Login as employee or finance manager
     As an employee, request reimbursement for business expenses
