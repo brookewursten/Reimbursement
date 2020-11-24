@@ -41,7 +41,7 @@ Getting Started
     Deploy the war to tomcat and visit localhost:{tomcat port}/Reimbursement
     
     You should see the login page:
-    ![](https://github.com/brookewursten/Reimbursement/blob/master/VandelayReimbursement.png)
+    ![](https://raw.githubusercontent.com/brookewursten/Reimbursement/master/VandelayReimbursement.png)
 
 Usage
 
